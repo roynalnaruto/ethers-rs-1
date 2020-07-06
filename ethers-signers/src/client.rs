@@ -1,4 +1,4 @@
-use crate::Signer;
+use crate::{Resubmission, Signer};
 
 use ethers_core::types::{
     Address, BlockNumber, Bytes, NameOrAddress, Signature, TransactionRequest, TxHash,
@@ -235,6 +235,20 @@ where
         let provider = self.provider.interval(interval.into());
         self.provider = provider;
         self
+    }
+
+    /// Creates and returns a new instance of `Resubmission`, which would allow
+    /// the given transaction to be resent by bumping the gas price as per the
+    /// resubmission policy. `Resubmission` implements `Future` so you need to
+    /// `await` on it, which in the successful scenario will return the transaction
+    /// receipt of the mined transaction
+    pub fn resubmit(
+        &self,
+        tx: TransactionRequest,
+        tx_hash: TxHash,
+        confs: Option<usize>,
+    ) -> Resubmission<P, S> {
+        Resubmission::new(self, tx, tx_hash, confs).interval(self.provider.get_interval())
     }
 }
 

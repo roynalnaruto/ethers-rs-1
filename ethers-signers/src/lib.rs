@@ -43,6 +43,9 @@ pub use wallet::Wallet;
 mod client;
 pub use client::{Client, ClientError};
 
+mod resubmission;
+pub use resubmission::Resubmission;
+
 use ethers_core::types::{Address, Signature, Transaction, TransactionRequest};
 use ethers_providers::Http;
 use std::error::Error;
