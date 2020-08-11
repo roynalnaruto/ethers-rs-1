@@ -237,11 +237,11 @@ where
         self
     }
 
-    /// Creates and returns a new instance of `Resubmission`, which would allow
-    /// the given transaction to be resent by bumping the gas price as per the
-    /// resubmission policy. `Resubmission` implements `Future` so you need to
-    /// `await` on it, which in the successful scenario will return the transaction
-    /// receipt of the mined transaction
+    // Creates and returns a new instance of `Resubmission`, which would allow
+    // the given transaction to be resent by bumping the gas price as per the
+    // resubmission policy. `Resubmission` implements `Future` so you need to
+    // `await` on it, which in the successful scenario will return the transaction
+    // receipt of the mined transaction
     pub fn resubmit(
         &self,
         tx: TransactionRequest,
