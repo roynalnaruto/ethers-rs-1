@@ -99,7 +99,7 @@ impl PrivateKey {
         self.sign_with_eip155(&sig_message, None)
     }
 
-    /// RLP encodes and then signs the stransaction.
+    /// RLP encodes and then signs the transaction.
     ///
     /// If no chain_id is provided, then EIP-155 is not used.
     ///

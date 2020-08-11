@@ -71,6 +71,32 @@ mod eth_tests {
 
         assert!(balance_before > balance_after);
     }
+
+    #[tokio::test]
+    async fn test_resubmission() {
+        let ganache = Ganache::new().block_time(2u64).spawn();
+
+        let wallet: Wallet = ganache.keys()[0].clone().into();
+        let wallet2: Wallet = ganache.keys()[1].clone().into();
+
+        let provider = Provider::<Http>::try_from(ganache.endpoint())
+            .unwrap()
+            .interval(Duration::from_millis(10u64));
+
+        let client = wallet.connect(provider);
+
+        let tx = TransactionRequest::new().to(wallet2.address()).value(100);
+
+        let tx_hash = client.send_transaction(tx.clone(), None).await.unwrap();
+
+        let tx_receipt = client
+            .resubmit(tx, tx_hash, None)
+            .interval(Duration::from_millis(20u64))
+            .await
+            .unwrap();
+
+        println!("tx receipt = {:?}", tx_receipt);
+    }
 }
 
 #[cfg(feature = "celo")]
